@@ -3,10 +3,16 @@ from datetime import datetime
 from record import Record
 import file_utils
 import csv
+from encryption import decrypt_file
+
+key = b'5fp1lg8_jZKwQFpBHH9F2QYRRc3fn8cFmSsZu33Z6PI='
 
 # Open the file for reading
 filepath = file_utils.get_file_path("demo", "tap")
 print(filepath)
+
+decrypt_file(key, filepath, filepath)
+
 with open(filepath, 'rb') as f:
     # Read the binary data from the file
     binary_data = f.read()

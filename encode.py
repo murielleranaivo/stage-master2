@@ -3,6 +3,9 @@ from pyasn1.type import univ
 from pyasn1.type import char
 from pyasn1.codec.ber import encoder
 import file_utils
+from encryption import encrypt_file
+
+key = b'5fp1lg8_jZKwQFpBHH9F2QYRRc3fn8cFmSsZu33Z6PI='
 
 cdr_records = []
 cdrpath = file_utils.get_file_path("cdr", "txt")
@@ -65,3 +68,5 @@ print(filepath)
 with open(filepath, "wb") as tap_file:
     for tap_record in tap_records:
         tap_file.write(tap_record)
+        
+encrypt_file(key, filepath, filepath)
