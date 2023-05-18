@@ -1,33 +1,30 @@
 from flask import Flask,render_template
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 
 # my db connection
 local_server= True
 app = Flask(__name__)
 app.secret_key='MIALY'
 
-app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:@localhost/roaming'
-db=SQLAlchemy(app) 
-
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:@localhost/roaming'
+db=SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 #here we will create db models that is tables
-class Test(db.Model):
+class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     email = db.Column(db.String(100))
-  
-    
-    
+
 @app.route('/')
 def hello_world():
-    a=Test.query.all()
-    print(a)
-    return render_template('index.html')
-    #try:
-    #    Test.query.all()
-    #    return 'My db is connected'
-    #except:
-    #    return 'My db is not connected'
+    try:
+       User.query.all()
+       return 'My db is connected'
+    except:
+       return 'My db is not connected'
+    # return render_template('index.html')
      
 
 @app.route('/encode')
