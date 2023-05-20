@@ -7,66 +7,64 @@ from encryption import encrypt_file
 
 key = b'5fp1lg8_jZKwQFpBHH9F2QYRRc3fn8cFmSsZu33Z6PI='
 
-cdr_records = []
-cdrpath = file_utils.get_file_path("cdr", "txt")
-with open(cdrpath, 'r') as file:
-    cdr_records = file.readlines()
+def encode_records_to_tap(cdr_records):
     
-tap_records = []
-for cdr_record in cdr_records:
-    cdr_record = cdr_record.strip()
-    cdr_fields = cdr_record.split("|")
-    
-    # Create a Record object and set its components
-    record = Record()
-    record.setComponentByName('CALL_TYPE', univ.Integer(int(cdr_fields[0])))
-    record.setComponentByName('SERVICE_CODE', univ.Integer(int(cdr_fields[1])))
-    record.setComponentByName('NE_CODE', char.VisibleString(cdr_fields[2]))
-    record.setComponentByName('IN_ROUTE', char.VisibleString(cdr_fields[3]))
-    record.setComponentByName('OUT_ROUTE', char.VisibleString(cdr_fields[4]))
-    record.setComponentByName('IMSI', char.VisibleString(cdr_fields[5]))
-    record.setComponentByName('SGSN_ADDRESS', char.VisibleString(cdr_fields[6]))
-    record.setComponentByName('A_NUMBER', char.VisibleString(cdr_fields[7]))
-    record.setComponentByName('B_NUMBER', char.VisibleString(cdr_fields[8]))
-    record.setComponentByName('C_NUMBER', char.VisibleString(cdr_fields[9]))
-    record.setComponentByName('APN_ADDRESS', char.VisibleString(cdr_fields[10]))
-    record.setComponentByName('PDP_ADDRESS', char.VisibleString(cdr_fields[11]))
-    record.setComponentByName('CALL_DATE', char.VisibleString(cdr_fields[12]))
-    record.setComponentByName('CALL_DURATION', univ.Integer(int(cdr_fields[13])))
-    record.setComponentByName('DATA_VOLUME_INC', univ.Integer(int(cdr_fields[14])))
-    record.setComponentByName('DATA_VOLUME_OUT', univ.Integer(int(cdr_fields[15])))
-    record.setComponentByName('TELESERVICE', char.VisibleString((cdr_fields[16])))
-    record.setComponentByName('BEARERSERVICE', char.VisibleString((cdr_fields[17])))
-    record.setComponentByName('CAMEL_FLAG', char.VisibleString(cdr_fields[18]))
-    record.setComponentByName('CAMEL_SERVICE_LEVEL', char.VisibleString(cdr_fields[19]))
-    record.setComponentByName('CAMEL_SERVICE_KEY', char.VisibleString(cdr_fields[20]))
-    record.setComponentByName('CAMEL_DEFAULT_CALL_HANDLING', char.VisibleString(cdr_fields[21]))
-    record.setComponentByName('CAMEL_SERVER_ADDRESS', char.VisibleString(cdr_fields[22]))
-    record.setComponentByName('CAMEL_MSC_ADDRESS', char.VisibleString(cdr_fields[23]))
-    record.setComponentByName('CAMEL_CALL_REF_NUM', char.VisibleString(cdr_fields[24]))
-    record.setComponentByName('CAMEL_INIT_CF_INDICATOR', char.VisibleString(cdr_fields[25]))
-    record.setComponentByName('CAMEL_DESTINATION_NUM', char.VisibleString(cdr_fields[26]))
-    record.setComponentByName('CAMEL_MODIFICATION', char.VisibleString(cdr_fields[27]))
-    record.setComponentByName('SUPPLIMENTARY_NUM', char.VisibleString(cdr_fields[28]))
-    record.setComponentByName('NETWORK_TIME', char.VisibleString(cdr_fields[29]))
-    record.setComponentByName('REASON_FOR_CLEARDOWN', char.VisibleString(cdr_fields[30]))
-    record.setComponentByName('PARTIAL_INDICATOR', char.VisibleString(cdr_fields[31]))
-    record.setComponentByName('PARTIAL_SEQ_NUM', char.VisibleString(cdr_fields[32]))
-    record.setComponentByName('IMEI_NUM', char.VisibleString(cdr_fields[33]))
-    record.setComponentByName('CHRONO_NUM', char.VisibleString(cdr_fields[34]))
-    record.setComponentByName('CHARGING_ID', char.VisibleString(cdr_fields[35]))
-    record.setComponentByName('SUBSCRIBER_TYPE', char.VisibleString(cdr_fields[36]))
-
-    # Append the record to the list
-    tap_record = encoder.encode(record)
-    tap_records.append(tap_record)
-
-# write records into encoded tap file
-
-filepath = file_utils.get_file_path("demo", "tap")
-print(filepath)
-with open(filepath, "wb") as tap_file:
-    for tap_record in tap_records:
-        tap_file.write(tap_record)
+    tap_records = []
+    for cdr_record in cdr_records:
         
-encrypt_file(key, filepath, filepath)
+        # Create a Record object and set its components
+        record = Record()
+        record.setComponentByName('CALL_TYPE', univ.Integer(cdr_record.call_type))
+        record.setComponentByName('SERVICE_CODE', univ.Integer(cdr_record.service_code))
+        record.setComponentByName('NE_CODE', char.VisibleString(cdr_record.ne_code))
+        record.setComponentByName('IN_ROUTE', char.VisibleString(cdr_record.in_route))
+        record.setComponentByName('OUT_ROUTE', char.VisibleString(cdr_record.out_route))
+        record.setComponentByName('IMSI', char.VisibleString(cdr_record.imsi))
+        record.setComponentByName('SGSN_ADDRESS', char.VisibleString(cdr_record.sgsn_address))
+        record.setComponentByName('A_NUMBER', char.VisibleString(cdr_record.a_number))
+        record.setComponentByName('B_NUMBER', char.VisibleString(cdr_record.b_number))
+        record.setComponentByName('C_NUMBER', char.VisibleString(cdr_record.c_number))
+        record.setComponentByName('APN_ADDRESS', char.VisibleString(cdr_record.apn_address))
+        record.setComponentByName('PDP_ADDRESS', char.VisibleString(cdr_record.pdp_address))
+        record.setComponentByName('CALL_DATE', char.VisibleString(cdr_record.call_date))
+        record.setComponentByName('CALL_DURATION', univ.Integer(cdr_record.call_duration))
+        record.setComponentByName('DATA_VOLUME_INC', univ.Integer(cdr_record.data_volume_inc))
+        record.setComponentByName('DATA_VOLUME_OUT', univ.Integer(cdr_record.data_volume_out))
+        record.setComponentByName('TELESERVICE', char.VisibleString(cdr_record.teleservice))
+        record.setComponentByName('BEARERSERVICE', char.VisibleString(cdr_record.bearerservice))
+        record.setComponentByName('CAMEL_FLAG', char.VisibleString(cdr_record.camel_flag))
+        record.setComponentByName('CAMEL_SERVICE_LEVEL', char.VisibleString(cdr_record.camel_service_level))
+        record.setComponentByName('CAMEL_SERVICE_KEY', char.VisibleString(cdr_record.camel_service_key))
+        record.setComponentByName('CAMEL_DEFAULT_CALL_HANDLING', char.VisibleString(cdr_record.camel_default_call_handling))
+        record.setComponentByName('CAMEL_SERVER_ADDRESS', char.VisibleString(cdr_record.camel_server_address))
+        record.setComponentByName('CAMEL_MSC_ADDRESS', char.VisibleString(cdr_record.camel_msc_address))
+        record.setComponentByName('CAMEL_CALL_REF_NUM', char.VisibleString(cdr_record.camel_call_ref_num))
+        record.setComponentByName('CAMEL_INIT_CF_INDICATOR', char.VisibleString(cdr_record.camel_init_cf_indicator))
+        record.setComponentByName('CAMEL_DESTINATION_NUM', char.VisibleString(cdr_record.camel_destination_num))
+        record.setComponentByName('CAMEL_MODIFICATION', char.VisibleString(cdr_record.camel_modification))
+        record.setComponentByName('SUPPLIMENTARY_NUM', char.VisibleString(cdr_record.supplimentary_num))
+        record.setComponentByName('NETWORK_TIME', char.VisibleString(cdr_record.network_time))
+        record.setComponentByName('REASON_FOR_CLEARDOWN', char.VisibleString(cdr_record.reason_for_cleardown))
+        record.setComponentByName('PARTIAL_INDICATOR', char.VisibleString(cdr_record.partial_indicator))
+        record.setComponentByName('PARTIAL_SEQ_NUM', char.VisibleString(cdr_record.partial_seq_num))
+        record.setComponentByName('IMEI_NUM', char.VisibleString(cdr_record.imei_num))
+        record.setComponentByName('CHRONO_NUM', char.VisibleString(cdr_record.chrono_num))
+        record.setComponentByName('CHARGING_ID', char.VisibleString(cdr_record.charging_id))
+        record.setComponentByName('SUBSCRIBER_TYPE', char.VisibleString(cdr_record.subscriber_type))
+
+        # Append the record to the list
+        tap_record = encoder.encode(record)
+        tap_records.append(tap_record)
+
+    # write records into encoded tap file
+
+    filepath = file_utils.get_file_path("demo", "tap")
+    print(filepath)
+    with open(filepath, "wb") as tap_file:
+        for tap_record in tap_records:
+            tap_file.write(tap_record)
+            
+    #encrypt_file(key, filepath, filepath)
+
+#cdrpath = input("Enter cdr path: ")
+#encode(cdrpath)
