@@ -7,8 +7,8 @@ from encryption import decrypt_file
 
 key = b'5fp1lg8_jZKwQFpBHH9F2QYRRc3fn8cFmSsZu33Z6PI='
 
-def decode(filepath):
-    decrypt_file(key, filepath, filepath)
+def decode_tap_to_csv(filepath):
+    #decrypt_file(key, filepath, filepath)
 
     with open(filepath, 'rb') as f:
         # Read the binary data from the file
@@ -21,10 +21,6 @@ def decode(filepath):
         record, binary_data = decoder.decode(binary_data, asn1Spec=Record())
         # Append the decoded record to the list
         record_list.append(record)
-
-    # Print the decoded records
-    for record in record_list:
-        print(record.prettyPrint())
 
     # Write the decoded records to a CSV file
     cdrpath = file_utils.get_file_path("cdr", "csv")
@@ -90,6 +86,3 @@ def decode(filepath):
                 record.getComponentByName("SUBSCRIBER_TYPE")
             ]
             writer.writerow(row)
-
-filepath = input("Enter TAP: ")
-decode(filepath)

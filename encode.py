@@ -65,6 +65,3 @@ def encode_records_to_tap(cdr_records):
             tap_file.write(tap_record)
             
     #encrypt_file(key, filepath, filepath)
-
-#cdrpath = input("Enter cdr path: ")
-#encode(cdrpath)
