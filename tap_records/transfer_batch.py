@@ -8,9 +8,9 @@ from tap_records.network_info import NetworkInfo
 
 class TransferBatch(univ.Sequence):
     componentType = namedtype.NamedTypes(
-        namedtype.NamedType('batchControlInfo', BatchControlInfo()),
-        namedtype.NamedType('accountingInfo', AccountingInfo()),
-        namedtype.NamedType('networkInfo', NetworkInfo()),
-        namedtype.NamedType('callEventDetails', CallEventDetails()),
-        namedtype.NamedType('auditControlInfo', AuditControlInfo())
+        namedtype.NamedType('BatchControlInfo', BatchControlInfo()),
+        namedtype.NamedType('AccountingInfo', AccountingInfo()),
+        namedtype.NamedType('NetworkInfo', NetworkInfo()),
+        namedtype.NamedType('CallEventDetails', CallEventDetails()),
+        namedtype.NamedType('AuditControlInfo', AuditControlInfo())
     )

@@ -5,6 +5,6 @@ from tap_records.mobile_originated_call import MobileOriginatedCall
 
 class CallEventDetail(univ.Sequence):
     componentType = namedtype.NamedTypes(
-        namedtype.NamedType('mobileTerminatedCall', MobileTerminatedCall()),
-        namedtype.NamedType('mobileOriginatedCall', MobileOriginatedCall())
+        namedtype.NamedType('MobileTerminatedCall', MobileTerminatedCall()),
+        namedtype.NamedType('MobileOriginatedCall', MobileOriginatedCall())
     )

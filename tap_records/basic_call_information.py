@@ -6,9 +6,9 @@ from tap_records.chargeable_subscriber import ChargeableSubscriber
 
 class BasicCallInformation(univ.Sequence):
     componentType = namedtype.NamedTypes(
-        namedtype.NamedType('chargeableSubscriber', ChargeableSubscriber()),
-        namedtype.NamedType('callOriginator', CallOriginator()),
-        namedtype.NamedType('callEventStartTimeStamp', CallEventTimeStamp()),
-        namedtype.NamedType('totalCallEventDuration', univ.Integer())
+        namedtype.NamedType('ChargeableSubscriber', ChargeableSubscriber()),
+        namedtype.NamedType('CallOriginator', CallOriginator()),
+        namedtype.NamedType('CallEventStartTimeStamp', CallEventTimeStamp()),
+        namedtype.NamedType('TotalCallEventDuration', univ.Integer())
     )
 

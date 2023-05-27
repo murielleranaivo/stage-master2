@@ -4,5 +4,5 @@ from tap_records.transfer_batch import TransferBatch
 
 class DataInterChange(univ.Sequence):
     componentType = namedtype.NamedTypes(
-        namedtype.NamedType('transferBatch', TransferBatch())
+        namedtype.NamedType('TransferBatch', TransferBatch())
     )
