@@ -1,8 +1,7 @@
-from pyasn1.type import univ, namedtype, namedval, tag
+from pyasn1.type import univ
 
-class CurrencyConversionInfo(univ.Sequence):
-    componentType = namedtype.NamedTypes(
-        namedtype.NamedType('exchangeRate', univ.Real()),
-        namedtype.NamedType('exchangeRateDate', univ.OctetString())
-    )
+from tap_records.currency_conversion import CurrencyConversion
+
+class CurrencyConversionInfo(univ.SequenceOf):
+    componentType = CurrencyConversion()
 
