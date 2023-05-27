@@ -18,13 +18,13 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/">Home</a>
               </li>
-              <li class="nav-item">
+              <!--<li class="nav-item">
                 <a class="nav-link" href="#">TAPOUT</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">TAPIN</a>
-              </li>
-              <li class="nav-item dropdown">
+              </li>-->
+              <!--<li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Authentication
                 </a>
@@ -34,7 +34,7 @@
                   <li><hr class="dropdown-divider"></li>
                   <li><a class="dropdown-item" href="#">Something else here</a></li>
                 </ul>
-              </li>
+              </li>-->
               <!-- <li class="nav-item">
                 <a class="nav-link disabled">Disabled</a>
               </li> -->
@@ -52,10 +52,29 @@
       <div class="row">
         <div class="col-md-4"></div>
 
-        <div class="col-md-4 p-4 bg-body-tertiary rounded-3">
+        <!--dark-->
+        <div class="col-md-4 p-4 bg-body-tertiary rounded-4">
               <h3>Login </h3>
               <br>
-          <form>
+
+          {% with message=get_flashed_messages(with_categories=true) %}
+          {% if message %}
+          {% for category, message in message %}
+
+          <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+            {{message}}
+
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>  
+          </div>
+
+          {% endfor %}
+          {% endif %}
+          {% endwith %}
+
+
+          <form action="/login" method="post">
 
             <div class="mb-3">
               <label for="username" class="form-label">Username</label>
@@ -79,7 +98,7 @@
               <label class="form-check-label" for="exampleCheck1">Check me out</label>
             </div> -->
 
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary" href="/decode">Login</button>
           </form>
 
           <br>

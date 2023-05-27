@@ -1,9 +1,10 @@
-from flask import render_template,request,session,redirect
+from flask import render_template,request,session,redirect,url_for,flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import login_user,logout_user
+from flask_login import login_user,logout_user,login_manager,LoginManager
+from flask_login import login_required,current_user
 from sqlalchemy import text
 from decode import decode_tap_to_csv
 from encode import encode_records_to_tap
@@ -18,6 +19,16 @@ local_server= True
 app = get_app()
 
 db = get_db()
+
+#this is for getting unique user access
+login_manager=LoginManager(app)
+login_manager.login_view='login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
 
 #here we will create db models that is tables
 class User(UserMixin,db.Model):
@@ -50,6 +61,11 @@ def decode():
     
     decode_tap_to_csv(filepath)
     
+    if not User.is_authenticated:
+        return render_template('login.html')
+    else:
+
+        return render_template('decode.html',username=current_user.username)
     return render_template('decode.html')
 
 @app.route('/insert')
@@ -65,8 +81,22 @@ def insert():
     
     return render_template('decode.html')
 
-@app.route('/login')
+@app.route('/login',methods=['POST','GET'])
 def login():
+    if request.method =="POST":
+        
+        username=request.form.get('username')
+        email=request.form.get('email')
+        password=request.form.get('password')
+        
+        user=User.query.filter_by(email=email).first()
+        if user and check_password_hash(user.password,password):
+            login_user(user)
+            flash("Login Success","primary")
+            return redirect(url_for('decode'))
+        else :
+            flash('invalid credentials','danger')
+            return render_template('login.html')  
     return render_template('login.html')
 
 @app.route('/signup',methods=['POST','GET'])
@@ -92,9 +122,14 @@ def signup():
     return render_template('signup.html')
 
 @app.route('/lougout')
+@login_required
 def lougout():
-    return render_template('login.html')
+    logout_user()
+    return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
     app.run()
+    
+
+#username=current_user.username
