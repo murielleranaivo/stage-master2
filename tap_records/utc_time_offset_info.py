@@ -1,8 +1,6 @@
-from pyasn1.type import univ, namedtype
+from pyasn1.type import univ
+from tap_records.time_stamp import TimeStamp
 
-class UtcTimeOffsetInfo(univ.Sequence):
-    componentType = namedtype.NamedTypes(
-        namedtype.NamedType('UtcTimeOffsetCode', univ.Integer()),
-        namedtype.NamedType('UtcTimeOffset', univ.Integer())
-    )
+class UtcTimeOffsetInfo(univ.SequenceOf):
+    componentType = TimeStamp()
 

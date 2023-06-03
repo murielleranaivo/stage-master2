@@ -64,7 +64,7 @@ def decode():
     if not User.is_authenticated:
         return render_template('login.html')
     else:
-
+        
         return render_template('decode.html',username=current_user.username)
     return render_template('decode.html')
 
@@ -91,8 +91,9 @@ def login():
         
         user=User.query.filter_by(email=email).first()
         if user and check_password_hash(user.password,password):
+            
             login_user(user)
-            flash("Login Success","primary")
+
             return redirect(url_for('decode'))
         else :
             flash('invalid credentials','danger')
@@ -125,6 +126,7 @@ def signup():
 @login_required
 def lougout():
     logout_user()
+    
     return redirect(url_for('login'))
 
 
